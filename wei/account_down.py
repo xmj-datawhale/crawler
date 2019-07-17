@@ -49,20 +49,25 @@ driver_account.find_element(By.XPATH,'//*[@id="agree"]').click()
 down_gold=1
 """已封盘"""
 while True:
-    down_code = '%d%d%d%d' % (random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
-    if len(driver_account.find_elements(By.XPATH,'//*[@id="main"]/div/div/div/table/tbody/tr/td/div')) >0 \
-            and driver_account.find_elements(By.XPATH, '//*[@id="main"]/div/div/div/table/tbody/tr/td/div')[0].text=='已封盘':
-        sleep(10)
-        continue
-    wait1.until(EC.presence_of_element_located((By.XPATH,'//*[@id="NumType"]')))
-    driver_account.find_element(By.XPATH,'//*[@id="NumType"]').click()
-    wait1.until(EC.presence_of_element_located((By.XPATH,'//*[@id="number"]')))
-    driver_account.find_element(By.XPATH,'//*[@id="number"]').send_keys(down_code)
-    wait1.until(EC.presence_of_element_located((By.XPATH,'//*[@id="gold"]')))
-    driver_account.find_element(By.XPATH,'//*[@id="gold"]').send_keys(down_gold)
-    wait1.until(EC.presence_of_element_located((By.XPATH,'//*[@id="kuaida"]')))
-    driver_account.find_element(By.XPATH,'//*[@id="kuaida"]/div[2]/div/table[2]/tbody/tr/td[3]/input[1]').click()
-    print(format_time(),down_code,down_gold)
-    sleep(90)
+    try:
+        down_code = '%d%d%d%d' % (random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
+        if len(driver_account.find_elements(By.XPATH,'//*[@id="main"]/div/div/div/table/tbody/tr/td/div')) >0 \
+                and driver_account.find_elements(By.XPATH, '//*[@id="main"]/div/div/div/table/tbody/tr/td/div')[0].text=='已封盘':
+            sleep(10)
+            continue
+        wait1.until(EC.presence_of_element_located((By.XPATH,'//*[@id="NumType"]')))
+        driver_account.find_element(By.XPATH,'//*[@id="NumType"]').click()
+        wait1.until(EC.presence_of_element_located((By.XPATH,'//*[@id="number"]')))
+        driver_account.find_element(By.XPATH,'//*[@id="number"]').send_keys(down_code)
+        wait1.until(EC.presence_of_element_located((By.XPATH,'//*[@id="gold"]')))
+        driver_account.find_element(By.XPATH,'//*[@id="gold"]').send_keys(down_gold)
+        wait1.until(EC.presence_of_element_located((By.XPATH,'//*[@id="kuaida"]')))
+        driver_account.find_element(By.XPATH,'//*[@id="kuaida"]/div[2]/div/table[2]/tbody/tr/td[3]/input[1]').click()
+        sleep(1)
+        print(format_time(),down_code,down_gold)
+        sleep(120)
+    except:
+        driver_account.refresh()
+        sleep(5)
 print(8)
 
