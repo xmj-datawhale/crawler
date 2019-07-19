@@ -17,10 +17,14 @@ def format_time():
 login_time=time.time()
 url='http://m8989.net/'
 proxy_input_no='668899'
-account='ss889'
-pwd='wei@123456'
+# pwd='wei@123456'
+pwd='aa0123456'
+# account='ss889'
+# search_account='ss668'
+# my_account='ss868'
+account='yyy88888'
 search_account='ss668'
-my_account='ss868'
+my_account='yy66999'
 webdriver.ChromeOptions.binary_location='./App/chrome.exe'
 driver_proxy = webdriver.Chrome('chromedriver1.exe')
 
@@ -35,11 +39,12 @@ def proxy_login():
     driver_proxy.find_element_by_xpath('//*[@id="submitbtn"]').click()
     """选择代理线路"""
     proxy_road=random.randint(1,8)
-    print("选择代理线路%s" % str(proxy_road))
+    print(format_time(),"选择代理线路%s" % str(proxy_road))
     wait.until(EC.presence_of_element_located((By.XPATH,'/html/body/div/div[2]/a[{}]'.format(proxy_road))))
     href=driver_proxy.find_element(By.XPATH,'/html/body/div/div[2]/a[{}]'.format(proxy_road)).get_attribute('href')
     driver_proxy.get(href)
     wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="Account"]')))
+    print(format_time(),"代理帐号",account,"pwd:",pwd)
     driver_proxy.find_element(By.XPATH,'//*[@id="Account"]').send_keys(account)
     driver_proxy.find_element(By.XPATH,'//*[@id="Password"]').send_keys(pwd)
     driver_proxy.find_element(By.XPATH,'//*[@id="btn-submit"]').click()
@@ -48,11 +53,11 @@ def proxy_login():
 try:
     proxy_login()
 except:
-    print("代理登录失败")
+    print(format_time(),"代理登录失败")
     sleep(3)
     proxy_login()
 else:
-    print("代理登录成功")
+    print(format_time(),"代理登录成功")
 # wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="agree"]')))
 # sleep(4)
 # while True:
@@ -74,12 +79,13 @@ def account_login():
     driver_account.find_element_by_xpath('//*[@id="submitbtn"]').click()
     """选择会员线路"""
     account_road=random.randint(9,16)
-    print("选择会员线路%s" % str(account_road))
+    print(format_time(),"选择会员线路%s" % str(account_road))
     wait1.until(EC.presence_of_element_located((By.XPATH,'/html/body/div/div[2]/a[{}]'.format(account_road))))
     href=driver_account.find_element(By.XPATH,'/html/body/div/div[2]/a[{}]'.format(account_road)).get_attribute('href')
     driver_account.get(href)
 
     wait1.until(EC.presence_of_element_located((By.XPATH,'//*[@id="Account"]')))
+    print(format_time(),"会员帐号", my_account, "pwd:", pwd)
     driver_account.find_element(By.XPATH,'//*[@id="Account"]').send_keys(my_account)
     driver_account.find_element(By.XPATH,'//*[@id="Password"]').send_keys(pwd)
     driver_account.find_element(By.XPATH,'//*[@id="btn-submit"]').click()
@@ -88,17 +94,22 @@ def account_login():
     while True:
         if driver_account.find_element_by_xpath('//*[@id="agree"]').get_attribute('value')=='同意':
             driver_account.find_element(By.XPATH, '//*[@id="agree"]').click()
+            return True
             break
         sleep(1)
 
 try:
-    account_login()
+    while True:
+        if account_login():
+            break
 except:
-    print("会员登录失败")
+    print(format_time(),"会员登录失败")
     sleep(3)
     account_login()
 else:
-    print("会员登录成功")
+    print(format_time(),"会员登录成功")
+    sleep(3)
+    print(my_account,"余额",driver_account.find_elements(By.XPATH, '//*[@id="Cash"]')[0].text)
 """会员登录 end"""
 
 
@@ -106,8 +117,11 @@ else:
 downed_order_no_list=[]
 while True:
     try:
+        """5分钟清理一起下注清单"""
         if time.time()-login_time >5*60:
             list,downed_order_no_list,login_time=[],[],time.time()
+            a_banlance = driver_account.find_elements(By.XPATH, '//*[@id="Cash"]')[0].text
+            print(format_time(),"5分钟清理一起下注清单", "余额", a_banlance)
         wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="wagers_manager_link"]/span')))
         driver_proxy.find_element(By.XPATH, '//*[@id="wagers_manager_link"]/span').click()
         #
@@ -132,7 +146,8 @@ while True:
                 continue
             o_account = driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/table/tbody/tr[{}]/td[3]'.format(i + 1))[0].text
             # print(o_account == search_account)
-            if o_account == search_account:
+            if o_account == search_account \
+                    or 1==1:
                 o_no = driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/table/tbody/tr[{}]/td[1]'.format(i + 1))[0].text
                 o_t = driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/table/tbody/tr[{}]/td[2]'.format(i + 1))[ 0].text
                 o_term_no = driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/table/tbody/tr[{}]/td[4]'.format(i + 1))[0].text
@@ -155,6 +170,7 @@ while True:
                 down_order_no=down['o_no']
                 down_code = down['o_code']
                 down_gold = down['o_momey']
+                # down_gold=1#默认下注金额 1
                 if down_order_no in downed_order_no_list:
                     continue
                 # down_gold = 1
@@ -167,8 +183,15 @@ while True:
                 print(format_time(),"下注：",down_code,down_gold)
                 sleep(1)
             list=[]
+            # a_banlance = driver_account.find_elements(By.XPATH, '//*[@id="Cash"]')[0].text
+            # print(format_time(), "余额---------", a_banlance)
+            """打印余额"""
+            # if time.time()-login_time > 50*60:
+            #     a_banlance=driver_account.find_elements(By.XPATH, '//*[@id="Cash"]')[0].text
+            #     print(format_time(),"余额",a_banlance)
         sleep(5)
-    except:
+    except Exception:
+        # print("会员异常刷新")
         driver_account.refresh()
         sleep(5)
 
