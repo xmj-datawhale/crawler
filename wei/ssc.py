@@ -7,8 +7,14 @@ from selenium.webdriver.common.keys import Keys
 from time import sleep
 import random
 import time
+import re
+import numpy as np
 def format_time():
     return "%s-%s-%s %s:%s:%s" % (
+    time.localtime().tm_year, time.localtime().tm_mon, time.localtime().tm_mday, time.localtime().tm_hour,
+    time.localtime().tm_min, time.localtime().tm_sec)
+def format_filename():
+    return "%s%s%s%s%s%s" % (
     time.localtime().tm_year, time.localtime().tm_mon, time.localtime().tm_mday, time.localtime().tm_hour,
     time.localtime().tm_min, time.localtime().tm_sec)
 '''跟注'''
@@ -109,7 +115,7 @@ except:
 else:
     print(format_time(),"会员登录成功")
     sleep(3)
-    print(my_account,"余额",driver_account.find_elements(By.XPATH, '//*[@id="Cash"]')[0].text)
+    print(format_time(),my_account,"余额",driver_account.find_elements(By.XPATH, '//*[@id="Cash"]')[0].text)
 """会员登录 end"""
 
 
@@ -117,6 +123,7 @@ else:
 downed_order_no_list=[]
 while True:
     try:
+        list = []
         """5分钟清理一起下注清单"""
         if time.time()-login_time >5*60:
             list,downed_order_no_list,login_time=[],[],time.time()
@@ -127,35 +134,46 @@ while True:
         # wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="SeleAccount"]')))
         # driver_proxy.find_element(By.XPATH, '//*[@id="SeleAccount"]').send_keys(search_account)
         # wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="gbGrid"]/a[2]')))
-        while True:
-            if len(driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/a[2]')) >0:
-                break
-            else:
-                sleep(5)
-        driver_proxy.find_element(By.XPATH, '//*[@id="gbGrid"]/a[2]').click()
-        trs = driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/table/tbody/tr')
-        list=[]
+        # while True:
+        #     if len(driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/a[2]')) >0:
+        #         break
+        #     else:
+        #         sleep(5)
+        # driver_proxy.find_element(By.XPATH, '//*[@id="gbGrid"]/a[2]').click()
+        """获取分页数据"""
+        wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id = "gbGrid"]/div/a[4]')))
+        total_str = driver_proxy.find_elements(By.XPATH, '//*[ @ id = "gbGrid"]/div /a[4]')[0].text
+        num = re.findall('\d+', total_str)[0]
+        for _ in range(int(num)):
+            trs_len = len(driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/table/tbody/tr'))
+            print(format_time(), "正在获取第%s页数据,一共%d 组" % (_,trs_len))
+            # for j in  range(3):
+            #     list.append({"o_no":"001", "o_t":"","o_code":"6785", "o_account":"", "o_term_no":"", "o_momey":"1"})
 
-        # for j in  range(3):
-        #     list.append({"o_no":"001", "o_t":"","o_code":"6785", "o_account":"", "o_term_no":"", "o_momey":"1"})
+            for i in range(trs_len):
+                if i == 0:
+                    continue
+                o_account = driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/table/tbody/tr[{}]/td[3]'.format(i + 1))[0].text
+                # print(o_account == search_account)
+                if o_account == search_account \
+                        or 1==1:
+                    o_no = driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/table/tbody/tr[{}]/td[1]'.format(i + 1))[0].text
+                    o_t = driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/table/tbody/tr[{}]/td[2]'.format(i + 1))[ 0].text
+                    o_term_no = driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/table/tbody/tr[{}]/td[4]'.format(i + 1))[0].text
+                    o_code = driver_proxy.find_elements(By.XPATH, '// *[ @ id = "gbGrid"] / table / tbody / tr[{}] / td[5] / font[2]'.format(i + 1))[0].text
+                    o_code=str.replace(o_code,'(','')
+                    o_code = str.replace(o_code, ')', '')
+                    o_momey = driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/table/tbody/tr[{}]/td[7]'.format(i + 1))[0].text
+                    # print(o_no, o_t, o_account, o_term_no, o_momey)
+                    # list.append({"o_no":o_no, "o_t":o_t,"o_code":o_code, "o_account":o_account, "o_term_no":o_term_no, "o_momey":o_momey})
+                    list.append({"o_no":str(o_no), "o_t":str(o_t),"o_code":str(o_code), "o_account":str(o_account), "o_term_no":str(o_term_no), "o_momey":str(o_momey)})
+            """下一页"""
+            wait.until(EC.presence_of_element_located((By.XPATH, '// *[@id="gbGrid"]/div/a[5]')))
+            driver_proxy.find_element(By.XPATH, '// *[@id="gbGrid"]/div/a[5]').click()
+            sleep(3)
 
-        for i in range(len(trs)):
-            if i == 0:
-                continue
-            o_account = driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/table/tbody/tr[{}]/td[3]'.format(i + 1))[0].text
-            # print(o_account == search_account)
-            if o_account == search_account \
-                    or 1==1:
-                o_no = driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/table/tbody/tr[{}]/td[1]'.format(i + 1))[0].text
-                o_t = driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/table/tbody/tr[{}]/td[2]'.format(i + 1))[ 0].text
-                o_term_no = driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/table/tbody/tr[{}]/td[4]'.format(i + 1))[0].text
-                o_code = driver_proxy.find_elements(By.XPATH, '// *[ @ id = "gbGrid"] / table / tbody / tr[{}] / td[5] / font[2]'.format(i + 1))[0].text
-                o_code=str.replace(o_code,'(','')
-                o_code = str.replace(o_code, ')', '')
-                o_momey = driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/table/tbody/tr[{}]/td[7]'.format(i + 1))[0].text
-                # print(o_no, o_t, o_account, o_term_no, o_momey)
-                # list.append({"o_no":o_no, "o_t":o_t,"o_code":o_code, "o_account":o_account, "o_term_no":o_term_no, "o_momey":o_momey})
-                list.append({"o_no":str(o_no), "o_t":str(o_t),"o_code":str(o_code), "o_account":str(o_account), "o_term_no":str(o_term_no), "o_momey":str(o_momey)})
+        np.save(format_filename()+".csv",list)
+        print(format_time(),"下注总数：",len(list))
         if list is not  None and len(list)>0:
             """下注"""
             if len(driver_account.find_elements(By.XPATH, '//*[@id="main"]/div/div/div/table/tbody/tr/td/div')) > 0 \
@@ -171,7 +189,7 @@ while True:
                 # down_gold=1#默认下注金额 1
                 if down_order_no in downed_order_no_list:
                     continue
-                # down_gold = 1
+                down_gold = 1
                 # driver_account.find_element(By.XPATH,'//*[@id="NumType"]').click()
                 driver_account.find_element(By.XPATH, '//*[@id="number"]').send_keys(down_code)
                 driver_account.find_element(By.XPATH, '//*[@id="gold"]').send_keys(down_gold)
@@ -181,12 +199,16 @@ while True:
                 print(format_time(),"下注：",down_code,down_gold)
                 sleep(1)
             list=[]
+            wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="gbGrid"]/a[2]')))
+            while True:
+                if len(driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/a[2]')) >0:
+                    break
+                else:
+                    sleep(5)
+            driver_proxy.find_element(By.XPATH, '//*[@id="gbGrid"]/a[2]').click()
             # a_banlance = driver_account.find_elements(By.XPATH, '//*[@id="Cash"]')[0].text
             # print(format_time(), "余额---------", a_banlance)
-            """打印余额"""
-            # if time.time()-login_time > 50*60:
-            #     a_banlance=driver_account.find_elements(By.XPATH, '//*[@id="Cash"]')[0].text
-            #     print(format_time(),"余额",a_banlance)
+
         sleep(5)
     except Exception:
         # print("会员异常刷新")
