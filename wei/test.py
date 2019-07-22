@@ -17,3 +17,4 @@ import time
 # downed_order_no_list.append("323")
 # print(downed_order_no_list)
 print(time.localtime().tm_hour,time.localtime().tm_hour%3==0)
+print(60*"*")

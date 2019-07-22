@@ -124,8 +124,8 @@ downed_order_no_list=[]
 while True:
     try:
         list = []
-        """5分钟清理一起下注清单"""
-        if time.time()-login_time >5*60:
+        """10分钟清理一起下注清单"""
+        if time.time()-login_time >10*60:
             list,downed_order_no_list,login_time=[],[],time.time()
             a_banlance = driver_account.find_elements(By.XPATH, '//*[@id="Cash"]')[0].text
             print(format_time(),"5分钟清理一起下注清单", "余额", a_banlance)
@@ -144,6 +144,10 @@ while True:
         wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id = "gbGrid"]/div/a[4]')))
         total_str = driver_proxy.find_elements(By.XPATH, '//*[ @ id = "gbGrid"]/div /a[4]')[0].text
         num = re.findall('\d+', total_str)[0]
+        wait.until(EC.presence_of_element_located((By.XPATH, '// *[ @ id = "showGameNum"]')))
+        term_no=driver_proxy.find_elements(By.XPATH, '// *[ @ id = "showGameNum"]')[0].text
+        print(format_time(),term_no,100*"*")
+        down_index=0
         for _ in range(int(num)):
             trs_len = len(driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/table/tbody/tr'))
             print(format_time(), "正在获取第%s页数据,一共%d 组" % (_,trs_len))
@@ -164,50 +168,60 @@ while True:
                     o_code=str.replace(o_code,'(','')
                     o_code = str.replace(o_code, ')', '')
                     o_momey = driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/table/tbody/tr[{}]/td[7]'.format(i + 1))[0].text
-                    # print(o_no, o_t, o_account, o_term_no, o_momey)
+                    # print(format_time(),o_no, o_t, o_account, o_term_no, o_momey,o_code)
                     # list.append({"o_no":o_no, "o_t":o_t,"o_code":o_code, "o_account":o_account, "o_term_no":o_term_no, "o_momey":o_momey})
                     list.append({"o_no":str(o_no), "o_t":str(o_t),"o_code":str(o_code), "o_account":str(o_account), "o_term_no":str(o_term_no), "o_momey":str(o_momey)})
+                    if o_code in downed_order_no_list:
+                        continue
+                    down_gold = 1
+                    # driver_account.find_element(By.XPATH,'//*[@id="NumType"]').click()
+                    driver_account.find_element(By.XPATH, '//*[@id="number"]').send_keys(o_code)
+                    driver_account.find_element(By.XPATH, '//*[@id="gold"]').send_keys(down_gold)
+                    # sleep(1)
+                    driver_account.find_element(By.XPATH, '//*[@id="kuaida"]/div[2]/div/table[2]/tbody/tr/td[3]/input[1]').click()
+                    downed_order_no_list.append(o_code)
+                    print(format_time(), "下注：", o_code, down_gold)
+                    down_index+=1
+                    sleep(0.5)
             """下一页"""
             wait.until(EC.presence_of_element_located((By.XPATH, '// *[@id="gbGrid"]/div/a[5]')))
             driver_proxy.find_element(By.XPATH, '// *[@id="gbGrid"]/div/a[5]').click()
             sleep(3)
 
-        np.save(format_filename()+".csv",list)
-        print(format_time(),"下注总数：",len(list))
-        if list is not  None and len(list)>0:
-            """下注"""
-            if len(driver_account.find_elements(By.XPATH, '//*[@id="main"]/div/div/div/table/tbody/tr/td/div')) > 0 \
-                    and driver_account.find_elements(By.XPATH, '//*[@id="main"]/div/div/div/table/tbody/tr/td/div')[0].text == '已封盘':
-                print(format_time(),"已封盘,未能下注:",list)
-                list.clear()
-                sleep(10)
-                continue
-            for down in list:
-                down_order_no=down['o_no']
-                down_code = down['o_code']
-                down_gold = down['o_momey']
-                # down_gold=1#默认下注金额 1
-                if down_order_no in downed_order_no_list:
-                    continue
-                down_gold = 1
-                # driver_account.find_element(By.XPATH,'//*[@id="NumType"]').click()
-                driver_account.find_element(By.XPATH, '//*[@id="number"]').send_keys(down_code)
-                driver_account.find_element(By.XPATH, '//*[@id="gold"]').send_keys(down_gold)
-                sleep(1)
-                driver_account.find_element(By.XPATH, '//*[@id="kuaida"]/div[2]/div/table[2]/tbody/tr/td[3]/input[1]').click()
-                downed_order_no_list.append(down_order_no)
-                print(format_time(),"下注：",down_code,down_gold)
-                sleep(1)
-            list=[]
-            wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="gbGrid"]/a[2]')))
-            while True:
-                if len(driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/a[2]')) >0:
-                    break
-                else:
-                    sleep(5)
-            driver_proxy.find_element(By.XPATH, '//*[@id="gbGrid"]/a[2]').click()
-            # a_banlance = driver_account.find_elements(By.XPATH, '//*[@id="Cash"]')[0].text
-            # print(format_time(), "余额---------", a_banlance)
+        # np.savetxt(format_filename()+".csv",list)
+        print(format_time(),"下注总数：",down_index)
+        # if list is not  None and len(list)>0:
+        #     """下注"""
+        #     if len(driver_account.find_elements(By.XPATH, '//*[@id="main"]/div/div/div/table/tbody/tr/td/div')) > 0 \
+        #             and driver_account.find_elements(By.XPATH, '//*[@id="main"]/div/div/div/table/tbody/tr/td/div')[0].text == '已封盘':
+        #         print(format_time(),"已封盘,未能下注:",list)
+        #         list.clear()
+        #         sleep(10)
+        #         continue
+        #     for down in list:
+        #         down_order_no=down['o_no']
+        #         down_code = down['o_code']
+        #         down_gold = down['o_momey']
+        #         # down_gold=1#默认下注金额 1
+        #         if down_order_no in downed_order_no_list:
+        #             continue
+        #         down_gold = 1
+        #         # driver_account.find_element(By.XPATH,'//*[@id="NumType"]').click()
+        #         driver_account.find_element(By.XPATH, '//*[@id="number"]').send_keys(down_code)
+        #         driver_account.find_element(By.XPATH, '//*[@id="gold"]').send_keys(down_gold)
+        #         # sleep(1)
+        #         # driver_account.find_element(By.XPATH, '//*[@id="kuaida"]/div[2]/div/table[2]/tbody/tr/td[3]/input[1]').click()
+        #         downed_order_no_list.append(down_order_no)
+        #         print(format_time(),"下注：",down_code,down_gold)
+        #         sleep(0.5)
+        #     list=[]
+        #     wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="gbGrid"]/a[2]')))
+        #     while True:
+        #         if len(driver_proxy.find_elements(By.XPATH, '//*[@id="gbGrid"]/a[2]')) >0:
+        #             break
+        #         else:
+        #             sleep(5)
+        #     driver_proxy.find_element(By.XPATH, '//*[@id="gbGrid"]/a[2]').click()
 
         sleep(5)
     except Exception:
@@ -215,28 +229,4 @@ while True:
         driver_account.refresh()
         sleep(5)
 
-
-
-# e=driver.find_element_by_xpath('//*[@id="app"]/div[1]/div[2]/div/div[2]/div[1]/div[2]/div[1]/div[2]/div[1]/div[1]/h2')
-
-# while True:
-#     driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
-#     # WebDriverWait(driver, 50)
-#     sleep(0.5)
-#     if len(driver.find_elements(By.CLASS_NAME,'vUoikev7_0')) > 0 :
-#         break
-#
-# while True:
-#     driver.find_element(By.CLASS_NAME,'vUoikev7_0').click()
-#     sleep(0.5)
-#     if len(driver.find_elements(By.CLASS_NAME,'OjL5wNoM_0')) > 0  and driver.find_element(By.CLASS_NAME,'OjL5wNoM_0').text!='加载更多':
-#         break
-#
-# list=driver.find_elements_by_xpath('//*[@id="app"]/div[1]/div[2]/div/div[2]/div[1]/div[2]/div[*]/div[2]/div[1]/div[1]')
-# for e in list:
-#     title=str.split(e.text,'\n')[0]
-#     lesson_no=str.split(e.text,'\n')[1].split('|')[0].strip().split('讲')[0]
-#     learning_no=str.split(e.text,'\n')[1].split('|')[1].strip().split('人')[0]
-#     # print('{},{},{}'.format(title,lesson_no,learning_no))
-#     print('%s,%s,%s'%(title,lesson_no,learning_no))
 driver_proxy.close()
