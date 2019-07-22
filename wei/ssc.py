@@ -124,8 +124,6 @@ while True:
             print(format_time(),"5分钟清理一起下注清单", "余额", a_banlance)
         wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="wagers_manager_link"]/span')))
         driver_proxy.find_element(By.XPATH, '//*[@id="wagers_manager_link"]/span').click()
-        #
-        #
         # wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="SeleAccount"]')))
         # driver_proxy.find_element(By.XPATH, '//*[@id="SeleAccount"]').send_keys(search_account)
         # wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="gbGrid"]/a[2]')))
