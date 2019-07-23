@@ -74,8 +74,7 @@ else:
 #     sleep(1)
 """代理登录end"""
 
-wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="wagers_manager_link"]/span')))
-driver_proxy.find_element(By.XPATH, '//*[@id="wagers_manager_link"]/span').click()
+
 """以下注的单号"""
 downed_order_no_list=[]
 downed_terms=[]
@@ -85,7 +84,8 @@ while True:
         sleep(5)
         continue
     try:
-
+        wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="wagers_manager_link"]/span')))
+        driver_proxy.find_element(By.XPATH, '//*[@id="wagers_manager_link"]/span').click()
         list = []
         if time.time()-login_time >10*60:
             downed_order_no_list,login_time=[],time.time()
