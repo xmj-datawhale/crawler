@@ -159,6 +159,7 @@ while True:
         # sleep(10)
     except Exception as err:
         print(format_time(),"exception：",err)
+        driver_proxy.refresh()
         # sleep(5)
     else:
         print(format_time(),'----OK')
