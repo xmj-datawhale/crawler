@@ -18,3 +18,25 @@ import time
 # print(downed_order_no_list)
 print(time.localtime().tm_hour,time.localtime().tm_hour%3==0)
 print(60*"*")
+import os
+import numpy as np
+print(os.path.exists(os.path.join('./importtxt','down.txt')))
+def data2txt(term_no):
+
+    str_txt=''
+    list=[]
+    for i in range(51):
+        # down_code = '%d%d%d%d' % (
+        # random.randint(0, 9), random.randint(0, 9), random.randint(0, 9), random.randint(0, 9))
+        down_code = '%d%dXX' % (random.randint(0, 9), random.randint(0, 9))
+        # str_txt+='12XX=1'
+        list.append('%s=%d'%(down_code,1))
+    # ''.join(list)''.join(list1)
+
+    print(','.join(list))
+    with open(os.path.join('./importtxt','%s.txt'%(term_no)),'w') as f:
+        f.write(','.join(list))
+    # np.savetxt(os.path.join('./importtxt','11.txt')
+# data2txt('50598854')
+print(os.path.exists(os.path.join('./importtxt','%s.txt'%('50598867'))))
+print(os.path.abspath(os.path.join('./importtxt','%s.txt'%('50598867'))))
