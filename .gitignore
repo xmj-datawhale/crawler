@@ -123,3 +123,7 @@ src/py3.x/*/*.ckpt*
 src/py3.x/*checkpoint*
 src/py3.x/*/*checkpoint*
 handson-ml/
+wei/APP
+wei/chromedriver1.exe
+wei/importtxt
+wei/*txt
