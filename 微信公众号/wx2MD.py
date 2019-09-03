@@ -1,36 +1,32 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-from docx import Document
-from docx.shared import Pt
-from docx.oxml.ns import qn
-Document()
-def data2Doc(_path,output):
-    doc=Document()
-    df = pd.read_csv(open(_path,encoding='utf-8'), lineterminator='\n', header=0)
+import os
+def data2MD(_path):
+    md_path = r'%s%s' % (_path, 'markdonw')
+    csv_path = r'%s%s' % (_path, 'article.list.csv')
+    if not os.path.exists(md_path):
+        os.makedirs(md_path)
+    summary_out=r'%s%s/summary.md'%(_path,'markdonw')
+    df = pd.read_csv(open(csv_path,encoding='utf-8'), lineterminator='\n', header=0)
     for i in range(1,len(df['content_html'])):
         title=df.get('title').iloc[i]
-        p_total = doc.add_heading(level=1)
-        r_total = p_total.add_run(title)
-        r_total.font.bold = True
-        r_total.font.size = Pt(18)
-        r_total.font.name = u'微软雅黑'
-        r_total._element.rPr.rFonts.set(qn('w:eastAsia'), u'微软雅黑')
+        title=str(title).replace('/','-').replace(' ','')
+        article_file='第%s篇-%s.md'%(str(i),str(title))
+        with open(summary_out,mode='a',encoding='utf-8') as sf:
+            sf.write('## [第%s篇  %s](%s) \n'%(str(i+1),str(title),str(article_file)))
         if type(df.get('content_html').iloc[i])!=str:
             continue
-        soup=BeautifulSoup(df.get('content_html').iloc[i],'lxml')
-        # context=str(df.get('content_html').iloc[i])[50:-6]
-        for p in soup.select('p'):
-            doc.add_paragraph(p.text)
+        context=str(df.get('content_html').iloc[i])[50:-6]
+        with open('%s/%s'%(md_path,article_file), mode='a', encoding='utf-8') as f:
+            f.write('## %s \n' % (str(article_file)[:-3]))
+            f.write(context+'\n')
+
         if i%100==0:
-            print("正在写入%s篇文章"%(str(i)))
-    doc.save(output)
-        # str_content='## %s\n %s\n'%(title,context)
-        # doc.add_paragraph("正文")
-        # with open(output,'a',encoding='utf-8') as f:
-        #     f.write(str_content)
+            print("正在写入%s篇文章"%(str(i+1)))
+
 
 if __name__ == '__main__':
-    data2Doc('./caoz的梦呓/article.list.csv','./caoz的梦呓/article.list.docx')
+    data2MD('./caoz的梦呓/')
     # pd.DataFrame(['asdf','vvvv']).to_csv('aa.csv')
     # pd.DataFrame(pd.read_csv('./caoz的梦呓//aa.csv', encoding='gbk',lineterminator='\n', header=0))
