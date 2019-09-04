@@ -19,7 +19,7 @@ FILE_DOWNLOAD_DIR       = r'F:/知识星球/生财有术/ALL_FILE'
 FILE_DOWNLOAD_URL       = 'https://api.zsxq.com/v1.10/files/%s/download_url'
 ALL_FILE_URL            = 'https://api.zsxq.com/v1.10/groups/%s/files?count=%s&end_time=%s' # [end_time-1]'https://api.zsxq.com/v1.10/groups/1824528822/files?count=20&end_time=2019-06-13T16%3A19%3A29.514%2B0800'
 COLUMNS                 = ['NUM','html_url', '主题ID', '主题标签', '创建时间','作者', '阅读数', '点赞数', '评论数', '回复数', '是否精华','是否问答', '是否文件','主题内容']#主题字段
-DOWNLOAD_FILE_COLUMNS   = [ '文件名称','主题ID', '文件ID', '创建时间',  '下载数', '文件大小','本地文件名称']#主题下载字段
+DOWNLOAD_FILE_COLUMNS   = ['文件名称', '主题ID', '文件ID', '创建时间','作者', '下载数', '文件大小', '本地文件名称']#主题下载字段
 
 TOPIC_SAVE_FILE         ='topics.csv'
 TOPIC_FILE_SAVE_FILE    ='topic_files.csv'
@@ -56,8 +56,8 @@ headers = {
     'origin': "https://wx.zsxq.com",
     'x-version': "1.10.14",
     'user-agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101 Firefox/68.0",
-    'x-request-id': "99096A6A-AC87-4CC4-28CB-C240E4719F4B",
-    'x-signature': "38cb64e03fdae4828b39432b374281d120c98e17",
+    'x-request-id': "93d451142-e94d-a0bd-b666-709a55d892f",
+    'x-signature': "0edf604f10c3fb2b1e4fab1fd69782ca4b31f2b0",
     'referer': "https://wx.zsxq.com/dweb/",
     'accept-encoding': "gzip, deflate, br",
     'accept-language': "en,zh-CN;q=0.9,zh;q=0.8,zh-TW;q=0.7",
@@ -66,8 +66,8 @@ headers = {
         name=sunny;\
         upload_channel=qiniu;\
         user_id=88511414142252;\
-        ws_address=wss%3A//ws.zsxq.com/ws%3Fversion%3Dv1.10%26access_token%3D99096A6A-AC87-4CC4-28CB-C240E4719F4B;\
-        zsxq_access_token=99096A6A-AC87-4CC4-28CB-C240E4719F4B;"
+        ws_address=wss://ws.zsxq.com/ws?version=v1.10&access_token=765385D7-057F-AA59-E3B5-EE9182F26FF7;\
+        zsxq_access_token=765385D7-057F-AA59-E3B5-EE9182F26FF7;"
 
 }
 

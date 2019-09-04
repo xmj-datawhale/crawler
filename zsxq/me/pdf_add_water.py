@@ -48,9 +48,9 @@ def create_watermark(content):
 def dateTime():
     return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 if __name__ == '__main__':
-    DIR=r'F:/知识星球/生财有术/ALL-20190829/'
+    DIR=r'F:/知识星球/生财有术/20190829-7/'
     for f in os.listdir(DIR):
-        if f.split(".")[-1]=="pdf" and f.find('xumajie1688')==-1:
+        if f.split(".")[-1]=="pdf" and f.find('xumajie1688')==-1 and f.find('mark.pdf')==-1 :
             print(dateTime(),"正在打水印",f)
             input_pdf=os.path.join(DIR,f)
             output=os.path.join(DIR,'微信（xumajie1688）%s'%(f))
