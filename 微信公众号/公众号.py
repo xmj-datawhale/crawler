@@ -36,6 +36,10 @@ class WxMps(object):
                   '&count=10&is_ok=1&scene=124&uin=777&key=777&pass_ticket={2}&wxtoken=&appmsg_token' \
                   '={3}&x5=1&f=json'.format(self.biz, offset, self.pass_ticket, self.msg_token)
 
+            # api = 'https://mp.weixin.qq.com/mp/profile_ext?action=getmsg&__biz={0}&f=json&offset={1}' \
+            #       '&count=10&is_ok=1&scene=7&uin=MjIzMzM0ODAzNw==&key=777&pass_ticket={2}&wxtoken=&appmsg_token' \
+            #       '={3}&x5=1&f=json'.format(self.biz, offset, self.pass_ticket, self.msg_token)
+
             resp = requests.get(api, headers=self.headers).json()
             ret, status = resp.get('ret'), resp.get('errmsg')  # 状态信息
             if ret == 0 or status == 'ok':
@@ -99,20 +103,24 @@ class WxMps(object):
         return sql
 
 # wx_list=[{'id':'MzI0MjA1Mjg2Ng==','name':'caoz的梦呓'}]
-wx_list=[{'id':'MjM5ODIyMTE0MA==','name':'小道消息'},
-         {'id':'MjM5ODIyMTE0MA==','name':'小道消息'}]
+wx_list=[
+         # {'id':'MjM5ODIyMTE0MA==','name':'小道消息'},
+         {'id':'MzI2OTM2NzA2OA==','name':'亦无所知'},
+         {'id':'MzI2MzE2NDczMw==','name':'半佛仙人'},
+         {'id':'MzIxODUxMDM5MQ==','name':'多元思维Hack'},
+         {'id':'MzI5MTE2NDI2OQ==','name':'仙人jump'}]
 if __name__ == '__main__':
     #
     for e in wx_list:
         wx_id=e['id']
         wx_name=e['name']
-        savepath='./%s/data'%(wx_name)
+        savepath='./data/%s'%(wx_name)
         if not os.path.exists(savepath):
             os.makedirs(savepath)
         biz = wx_id
-        pass_ticket = 'tXyQ3SIhI20x4eTt1ff3nkKLtw1HfEHY7aJ819gkjaXWM0%2F%2B8Gq59ZT0yXvtnwc2'
-        app_msg_token = '1024_8ic6eV1YSlEKHhQ46SzWDPQ9QPGzt5zxwyzaZg~~'
-        cookie = 'wap_sid2=CMXf+KgIElxTMXB3bkEwZHBmNzVkek5NZF93YjE5a0tQNnZEc3lQR2R1ejJDU3JwaTNxblZEaC1WZDEwM25mMUl0bENxYWNENmdtcU5FaGF1Q0tWZ0RUVHF4WFZOZ0FFQUFBfjCX/rjrBTgNQJVO'
+        pass_ticket = 'tXyQ3SIhI20x4eTt1ff3nkKLtw1HfEHY7aJ819gkjaXWM0/+8Gq59ZT0yXvtnwc2'
+        app_msg_token = '1024_mOYqBIXr4OCuvozhnfghgIl2yFZ4xk_6HweI3w~~'
+        cookie = 'wap_sid2=CMXf+KgIEnA3QVdyRl9maldRaXVWM0YzRG5DOHpFS2JaOVJ5c052NFItNlk0WHFrcnMwTkIzbGoyU0J5NV9SMTQzSE9haUc2MUFDenJxNFJNS0FUQ2RaNmxWbTNsRzBpYWVhcHIxQjlBWkpMOU8wU08wY0FCQUFBMMmJuesFOA1AlU4='
         columns=['title','cover','author','digest','source_url','content_url','content_html']
         # 以上信息不同公众号每次抓取都需要借助抓包工具做修改
         wxMps = WxMps(biz, pass_ticket, app_msg_token, cookie,_offset=0,_savepath=savepath,_cols=columns)
