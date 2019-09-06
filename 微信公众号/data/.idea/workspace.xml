@@ -2,15 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="08e80e21-f5a5-48c1-b095-2ddb6e87cf4f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../../工具类/img_compose.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../工具类/pdf2img.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../zsxq/me/pdf_add_water.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../zsxq/me/pdf_add_water.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../zsxq/me/sc_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../zsxq/me/sc_config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../zsxq/me/temp.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../zsxq/me/temp.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../tgest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../公众号-2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../zsxq/me/zsxq_crawl.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../zsxq/me/zsxq_crawl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../zsxq/test.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/../../zsxq/test.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../工具类/img_compose.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../工具类/img_compose.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../hot.md" beforeDir="false" afterPath="$PROJECT_DIR$/../hot.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../wx2MD.py" beforeDir="false" afterPath="$PROJECT_DIR$/../wx2MD.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../公众号.py" beforeDir="false" afterPath="$PROJECT_DIR$/../公众号.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />

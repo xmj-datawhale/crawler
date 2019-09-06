@@ -26,8 +26,7 @@ def image_compose():
     # 循环遍历，把每张图片按顺序粘贴到对应位置上
     for y in range(1, IMAGE_ROW + 1):
         for x in range(1, IMAGE_COLUMN + 1):
-            from_image = Image.open(IMAGES_PATH + image_names[IMAGE_COLUMN * (y - 1) + x - 1]).resize(
-                (IMAGE_SIZE, IMAGE_SIZE), Image.ANTIALIAS)
+            from_image = Image.open(IMAGES_PATH + image_names[IMAGE_COLUMN * (y - 1) + x - 1]).resize((IMAGE_SIZE, IMAGE_SIZE), Image.ANTIALIAS)
             to_image.paste(from_image, ((x - 1) * IMAGE_SIZE, (y - 1) * IMAGE_SIZE))
     return to_image.save(IMAGE_SAVE_PATH)  # 保存新图
 

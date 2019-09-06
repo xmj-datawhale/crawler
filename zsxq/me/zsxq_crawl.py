@@ -160,6 +160,7 @@ class zsxq_crwal(object):
             text = tp.handle_link(text)
             title = str(self.num) + '_' + cretime[:16] + '_' + tp.handle_link_tags()
             title=unquote(title)
+            title=unquote(title)
             if topic.get('digested') == True:
                 title += '_精华'
 
@@ -201,7 +202,7 @@ class zsxq_crwal(object):
             soup_c.body.append(comment_hr)
             html=str(soup_c)
             local_link = '=HYPERLINK("./htmls/%s.html")' % (str(topic.get('topic_id')))
-            row = [str(self.num),local_link,str(topic.get('topic_id')), tp.handle_link_tags(), cretime[:16], tp.getAuthor(),
+            row = [str(self.num),local_link,str(topic.get('topic_id')), unquote(tp.handle_link_tags()), cretime[:16], tp.getAuthor(),
                    topic.get('reading_count'), topic.get('likes_count'), topic.get('comments_count'),
                    topic.get('rewards_count'), tp.get_digested(), tp.isQuetionStr(), tp.getIsFileTopicStr(),
                    tp.handle_link()[:200]]
@@ -250,6 +251,8 @@ class zsxq_crwal(object):
         self.late_time=end_time
         self.early_time=start_time
         self.get_topic_list(self.late_time)
+        self.general_long_img()
+        self.move_logfile()
     def get_near_ndays_topics(self,n):
         # topic_ids=get_exists_topic_ids()
         self.dowload_files=True
@@ -747,22 +750,22 @@ if __name__ == '__main__':
     # print(zc.headers)
     # print('2019-08-28T17:52:26.806+0800'[0:10].replace('-',''))
     # config.DATA_DIR = './ALL-20190829'
-    # topic_id_set=get_file_id_set('%s/%s'%(config.DATA_DIR,str(config.TOPIC_SAVE_FILE)),'主题ID')
-    # file_id_set=get_file_id_set('%s/%s'%(config.FILE_DOWNLOAD_DIR,str(config.TOPIC_FILE_SAVE_FILE)),'文件ID')
-    # zc = zsxq_crwal(topic_id_set,file_id_set)
+    topic_id_set=get_file_id_set('%s/%s'%(config.DATA_ROOT,str(config.TOPIC_SAVE_FILE)),'主题ID')
+    file_id_set=get_file_id_set('%s/%s'%(config.FILE_DOWNLOAD_DIR,str(config.TOPIC_FILE_SAVE_FILE)),'文件ID')
+    zc = zsxq_crwal(topic_id_set,file_id_set)
 
     # df = pd.read_csv(open(r'F:/知识星球/生财有术/ALL-20190829/topics.csv', encoding='utf-8'), index_col=None, header=0,
     #                   lineterminator='\n', names=config.COLUMNS)
     # df.to_excel(r'F:/知识星球/生财有术/ALL-20190829/(微信：xumajie1688)生财有术.xlsx', encoding='utf-8')
 
-    zc = zsxq_crwal()
+    # zc = zsxq_crwal()
     # zc.data_dir=r'F:/知识星球/生财有术/20190904-2'
     # zc.general_long_img()
     # zc.get_file_list()
     # zc.get_near_3days_topics()
     # zc.data_dir='./ALL-20190829'
     # zc.get_topic_list(zc.late_time)
-    zc.get_near_ndays_topics(1)
+    zc.get_near_ndays_topics(2)
 
     # zc.data_dir = r'F:/知识星球/生财有术/20190904-1'
     # zc.move_logfile()
