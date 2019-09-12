@@ -12,8 +12,10 @@ from urllib.parse import quote
 from urllib.parse import unquote
 import random
 import pandas as pd
-import crawler.zsxq.me.sc_config as config
-import crawler.zsxq.me.pdf_add_water as wt
+# import sc_config as config
+# import yg_config as config
+import mlbm_config as config
+import pdf_add_water as wt
 import time
 import fitz
 import os
@@ -63,8 +65,12 @@ class zsxq_crwal(object):
         self.digests_htmls             =[]
         self.num=1
 
-    def _initDir_(self):
+    def _initDir_(self,get_all=None):
         # 初始化数据目录
+        if  get_all:
+            self.data_dir='%s/ALL_DATA'%(self.data_root)
+            if not os.path.exists(self.data_dir):
+                os.makedirs(self.data_dir)
         self.images_path = r'%s/images' % (self.data_dir)
         self.htmls_path = r'%s/htmls' % (self.data_dir)
         # self.files_path = r'%s/files' % (self.data_dir)
@@ -89,7 +95,8 @@ class zsxq_crwal(object):
     # 获取文件id后下载文件（zip,doc,xls  ....）
     def get_gobal_file(self, file_name, file_url):
         savepath = r'%s/' % (self.file_download_dir)
-
+        if not os.path.exists(savepath):
+            os.makedirs(savepath)
         def reporthook(a, b, c):
             print("\r  Downloading: %5.1f%%" % (a * b * 100.0 / c), end="")
 
@@ -123,14 +130,15 @@ class zsxq_crwal(object):
         df.drop('是否文件', axis=1, inplace=True)
         df.to_excel('%s/微信（xumajie1688）_%s.xlsx' % (self.data_dir,time.strftime('%Y%m%d')), encoding='utf-8')
         self.log("导入excel完成！！！")
-    def get_topic_list(self, endtime=None):
-        self._initDir_()
+    def get_topic_list(self, endtime=None,get_all=None):
+        self._initDir_(get_all)
         if not endtime:endtime=self.late_time
         if endtime<self.early_time:return
         start_url = self.topic_url % (str(self.group_id), str(self.counts_per_time), str(quote(get_urlcode_time(endtime))))
         self.log("开始请求", start_url)
         rsp = None
         try:
+
             rsp = requests.get(start_url, headers=self.headers)
         except Exception as e:
 
@@ -169,6 +177,7 @@ class zsxq_crwal(object):
                 images_index = 0
                 for img in content.get('images'):
                     url = img.get('large').get('url')
+                    if not url :continue
                     # local_url = './images/' + str(num - 1) + '_' + str(images_index) + '.jpg'
                     local_url = '%s/%s_%s.jpg' % (str(self.images_path), str(topic_id), str(images_index))
                     html_img_url = '../images/%s_%s.jpg' % (str(topic_id), str(images_index))
@@ -317,6 +326,8 @@ class zsxq_crwal(object):
     def move_logfile(self):
         log_dir=os.path.dirname(self.data_dir)
         log_file=r'%s/%s.log'%(self.data_dir,str(time.strftime('%Y%m%d')))
+        if not os.path.exists("%s/logs"%(self.data_root)):
+            os.makedirs("%s/logs"%(self.data_root))
         if os.path.exists(log_file):
             dist=r'%s/logs/%s.log'%(log_dir,str(time.strftime('%Y%m%d')))
             shutil.copyfile(log_file,dist)
@@ -331,7 +342,7 @@ class zsxq_crwal(object):
             topics_id_dist = r'%s/logs/%s-topic_ids' % (log_dir, str(time.strftime('%Y%m%d')))
             shutil.copyfile(topics_id_file, topics_id_dist)
             os.remove(topics_id_file)
-    def get_file_list(self,endtime=None):
+    def get_file_list(self,endtime=None,get_all=None):
 
         if not os.path.exists(self.file_download_dir):
             os.makedirs(self.file_download_dir)
@@ -344,8 +355,6 @@ class zsxq_crwal(object):
         try:
             rsp = requests.get(start_url, headers=self.headers)
         except Exception as e:
-
-
             self.log(e)
             time.sleep(5)
             rsp = requests.get(start_url, headers=self.headers)
@@ -761,15 +770,15 @@ if __name__ == '__main__':
     # zc = zsxq_crwal()
     # zc.data_dir=r'F:/知识星球/生财有术/20190904-2'
     # zc.general_long_img()
-    # zc.get_file_list()
+    # zc.get_file_list(get_all=True)
     # zc.get_near_3days_topics()
     # zc.data_dir='./ALL-20190829'
-    # zc.get_topic_list(zc.late_time)
-    zc.get_near_ndays_topics(2)
+    # zc.get_topic_list(get_all=True)
+    # zc.get_near_ndays_topics(2)
 
     # zc.data_dir = r'F:/知识星球/生财有术/20190904-1'
     # zc.move_logfile()
-    # zc.reed_csv_and_make_pdf('是否问答','是','所有贴',all=True)
+    zc.reed_csv_and_make_pdf('是否问答','是','所有贴',all=True)
     # zc.reed_csv_and_make_pdf('是否问答','是','问答')
     # zc.reed_csv_and_make_pdf('是否精华','是','精华')
 

@@ -1,8 +1,8 @@
 from urllib.request import quote
-NEW_LATE_DATE  = '2019-09-01 00:00:00' # 最晚时间
-NEW_EARLY_DATE = '2017-03-17 00:00:00'# 最早时间
-GROUP_ID = '1824528822'                                  # 知识星球中的小组ID
-FILE_NAME               = '生财有术'                    # 生成文件的名字
+NEW_LATE_DATE  = '2017-04-27 00:00:00' # 最晚时间
+NEW_EARLY_DATE = '2017-03-05 00:00:00'# 最早时间
+GROUP_ID = '8412585182'                                  # 知识星球中的小组ID
+FILE_NAME               = '编码美丽'                    # 生成文件的名字
 DOWLOAD_FILES           = True                                        # 是否下载文件 True | False 下载会导致程序变慢
 DOWLOAD_PICS            = True                                        # 是否下载图片 True | False 下载会导致程序变慢
 DOWLOAD_COMMENTS        = True                                    # 是否下载评论
@@ -14,11 +14,11 @@ DELETE_HTML_WHEN_DONE   = False                               # 运行完毕后�
 COUNTS_PER_TIME         = 30                                  # 每次请求加载几个主题 最大可设置为30
 DEBUG                   = False                               # DEBUG开关
 DEBUG_NUM               = 120                                 # DEBUG时 跑多少条数据后停止 需与COUNTS_PER_TIME结合考虑
-DATA_DIR                =r'F:/知识星球/生财有术/20190829-7'
-DATA_ROOT               =r'F:/知识星球/生财有术'
-FILE_DOWNLOAD_DIR       = r'F:/知识星球/生财有术/ALL_FILE'
+DATA_DIR                =r'F:/知识星球/编码美丽/ALL_DATA'
+DATA_ROOT               =r'F:/知识星球/编码美丽'
+FILE_DOWNLOAD_DIR       = r'F:/知识星球/编码美丽/ALL_FILE'
 FILE_DOWNLOAD_URL       = 'https://api.zsxq.com/v1.10/files/%s/download_url'
-ALL_FILE_URL            = 'https://api.zsxq.com/v1.10/groups/%s/files?count=%s&end_time=%s' # [end_time-1]'https://api.zsxq.com/v1.10/groups/1824528822/files?count=20&end_time=2019-06-13T16%3A19%3A29.514%2B0800'
+ALL_FILE_URL            = 'https://api.zsxq.com/v1.10/groups/%s/files?count=%s&end_time=%s' # [end_time-1]'https://api.zsxq.com/v1.10/groups/8412585182/files?count=20&end_time=2019-06-13T16%3A19%3A29.514%2B0800'
 COLUMNS                 = ['NUM','html_url', '主题ID', '主题标签', '创建时间','作者', '阅读数', '点赞数', '评论数', '回复数', '是否精华','是否问答', '是否文件','主题内容']#主题字段
 DOWNLOAD_FILE_COLUMNS   = ['文件名称', '主题ID', '文件ID', '创建时间','作者', '下载数', '文件大小', '本地文件名称']#主题下载字段
 

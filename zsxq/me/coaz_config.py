@@ -1,8 +1,7 @@
-from urllib.request import quote
 NEW_LATE_DATE  = '2019-09-01 00:00:00' # 最晚时间
 NEW_EARLY_DATE = '2017-03-17 00:00:00'# 最早时间
-GROUP_ID = '1824528822'                                  # 知识星球中的小组ID
-FILE_NAME               = '生财有术'                    # 生成文件的名字
+GROUP_ID = '455488242588'                                  # 知识星球中的小组ID
+FILE_NAME               = '壹鸽技术工程'                    # 生成文件的名字
 DOWLOAD_FILES           = True                                        # 是否下载文件 True | False 下载会导致程序变慢
 DOWLOAD_PICS            = True                                        # 是否下载图片 True | False 下载会导致程序变慢
 DOWLOAD_COMMENTS        = True                                    # 是否下载评论
@@ -14,11 +13,11 @@ DELETE_HTML_WHEN_DONE   = False                               # 运行完毕后�
 COUNTS_PER_TIME         = 30                                  # 每次请求加载几个主题 最大可设置为30
 DEBUG                   = False                               # DEBUG开关
 DEBUG_NUM               = 120                                 # DEBUG时 跑多少条数据后停止 需与COUNTS_PER_TIME结合考虑
-DATA_DIR                =r'F:/知识星球/生财有术/20190829-7'
-DATA_ROOT               =r'F:/知识星球/生财有术'
-FILE_DOWNLOAD_DIR       = r'F:/知识星球/生财有术/ALL_FILE'
+DATA_DIR                =r'F:/知识星球/壹鸽技术工程/20190829-7'
+DATA_ROOT               =r'F:/知识星球/壹鸽技术工程'
+FILE_DOWNLOAD_DIR       = r'F:/知识星球/壹鸽技术工程/ALL_FILE'
 FILE_DOWNLOAD_URL       = 'https://api.zsxq.com/v1.10/files/%s/download_url'
-ALL_FILE_URL            = 'https://api.zsxq.com/v1.10/groups/%s/files?count=%s&end_time=%s' # [end_time-1]'https://api.zsxq.com/v1.10/groups/1824528822/files?count=20&end_time=2019-06-13T16%3A19%3A29.514%2B0800'
+ALL_FILE_URL            = 'https://api.zsxq.com/v1.10/groups/%s/files?count=%s&end_time=%s' # [end_time-1]'https://api.zsxq.com/v1.10/groups/455488242588/files?count=20&end_time=2019-06-13T16%3A19%3A29.514%2B0800'
 COLUMNS                 = ['NUM','html_url', '主题ID', '主题标签', '创建时间','作者', '阅读数', '点赞数', '评论数', '回复数', '是否精华','是否问答', '是否文件','主题内容']#主题字段
 DOWNLOAD_FILE_COLUMNS   = ['文件名称', '主题ID', '文件ID', '创建时间','作者', '下载数', '文件大小', '本地文件名称']#主题下载字段
 
@@ -50,18 +49,25 @@ html_template = """
 </html>
 """
 
-UM_distinctid="6cb2da72810-0e3b3efa303afb8-4c312272-1fa400-16cb2da728281";
-_uab_collina="156636875770574735449994";
-name=quote("星期八");
-upload_channel="qiniu";
-user_id="15142221115542";
-ws_address="wss://ws.zsxq.com/ws?version=v1.10&access_token=0CBBBCD4-1A68-0BD3-AD93-124745DB5887";
-zsxq_access_token="0CBBBCD4-1A68-0BD3-AD93-124745DB5887";
-
+"""测试获取主题"""
 headers = {
     'Connection':'close',
-    'User-Agent':"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:69.0) Gecko/20100101 Firefox/69.0",
-    'cookie': "UM_distinctid=%s; _uab_collina=%s;name=%s;upload_channel=%s;user_id=%s;ws_address=%s;zsxq_access_token=%s;"%(UM_distinctid,_uab_collina,name,upload_channel,user_id,ws_address,zsxq_access_token)
+    'accept': "application/json, text/plain, */*",
+    'origin': "https://wx.zsxq.com",
+    'x-version': "1.10.17",
+    'user-agent': "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36",
+    'x-request-id': "bf35c2ec2-db0d-4f9e-ccfb-6f77ffea486",
+    'x-signature': "b487cf26c30222012b3f5762fdd496cb172036d1",
+    'referer': "https://wx.zsxq.com/dweb/",
+    'accept-encoding': "gzip, deflate, br",
+    'accept-language': "en,zh-CN;q=0.9,zh;q=0.8,zh-TW;q=0.7",
+    'cookie': "UM_distinctid=16ca80bddd0383-0ecd3b4229e928-37c143e-1fa400-16ca80bddd1486; \
+        _uab_collina=156525722606994871084067;\
+        name=星期八;\
+        user_id=15142221115542;\
+        ws_address=wss://ws.zsxq.com/ws?version=v1.10&access_token=28ACA17B-AA55-63A2-C016-9BAC660466D5;\
+        zsxq_access_token=28ACA17B-AA55-63A2-C016-9BAC660466D5;"
+
 }
 
 wk_options = {
