@@ -12,9 +12,9 @@ from urllib.parse import quote
 from urllib.parse import unquote
 import random
 import pandas as pd
-# import sc_config as config
+import sc_config as config
 # import yg_config as config
-import mlbm_config as config
+# import mlbm_config as config
 import pdf_add_water as wt
 import time
 import fitz
@@ -774,9 +774,9 @@ if __name__ == '__main__':
     # zc.get_near_3days_topics()
     # zc.data_dir='./ALL-20190829'
     # zc.get_topic_list(get_all=True)
-    # zc.get_near_ndays_topics(2)
+    # zc.get_near_ndays_topics(8)
 
-    # zc.data_dir = r'F:/知识星球/生财有术/20190904-1'
+    zc.data_dir = r'F:/知识星球/生财有术/20190918-8'
     # zc.move_logfile()
     zc.reed_csv_and_make_pdf('是否问答','是','所有贴',all=True)
     # zc.reed_csv_and_make_pdf('是否问答','是','问答')

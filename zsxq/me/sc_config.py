@@ -50,18 +50,18 @@ html_template = """
 </html>
 """
 
-UM_distinctid="6cb2da72810-0e3b3efa303afb8-4c312272-1fa400-16cb2da728281";
-_uab_collina="156636875770574735449994";
-name=quote("星期八");
-upload_channel="qiniu";
-user_id="15142221115542";
-ws_address="wss://ws.zsxq.com/ws?version=v1.10&access_token=0CBBBCD4-1A68-0BD3-AD93-124745DB5887";
-zsxq_access_token="0CBBBCD4-1A68-0BD3-AD93-124745DB5887";
+# UM_distinctid="6cb2da72810-0e3b3efa303afb8-4c312272-1fa400-16cb2da728281";
+# _uab_collina="156636875770574735449994";
+# name=quote("星期八");
+# upload_channel="qiniu";
+# user_id="15142221115542";
+# ws_address="wss://ws.zsxq.com/ws?version=v1.10&access_token=0CBBBCD4-1A68-0BD3-AD93-124745DB5887";
+zsxq_access_token="47D5DBC2-1E63-9CA3-3C6E-883FD947F31B";
 
 headers = {
     'Connection':'close',
     'User-Agent':"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:69.0) Gecko/20100101 Firefox/69.0",
-    'cookie': "UM_distinctid=%s; _uab_collina=%s;name=%s;upload_channel=%s;user_id=%s;ws_address=%s;zsxq_access_token=%s;"%(UM_distinctid,_uab_collina,name,upload_channel,user_id,ws_address,zsxq_access_token)
+    'cookie': "zsxq_access_token=%s;"%(zsxq_access_token)
 }
 
 wk_options = {
