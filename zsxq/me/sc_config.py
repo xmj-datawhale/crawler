@@ -14,9 +14,9 @@ DELETE_HTML_WHEN_DONE   = False                               # 运行完毕后�
 COUNTS_PER_TIME         = 30                                  # 每次请求加载几个主题 最大可设置为30
 DEBUG                   = False                               # DEBUG开关
 DEBUG_NUM               = 120                                 # DEBUG时 跑多少条数据后停止 需与COUNTS_PER_TIME结合考虑
-DATA_DIR                =r'F:/知识星球/生财有术/20190829-7'
-DATA_ROOT               =r'F:/知识星球/生财有术'
-FILE_DOWNLOAD_DIR       = r'F:/知识星球/生财有术/ALL_FILE'
+DATA_DIR                =r'D:/知识星球/生财有术/20190829-7'
+DATA_ROOT               =r'D:/知识星球/生财有术'
+FILE_DOWNLOAD_DIR       = r'D:/知识星球/生财有术/ALL_FILE'
 FILE_DOWNLOAD_URL       = 'https://api.zsxq.com/v1.10/files/%s/download_url'
 ALL_FILE_URL            = 'https://api.zsxq.com/v1.10/groups/%s/files?count=%s&end_time=%s' # [end_time-1]'https://api.zsxq.com/v1.10/groups/1824528822/files?count=20&end_time=2019-06-13T16%3A19%3A29.514%2B0800'
 COLUMNS                 = ['NUM','html_url', '主题ID', '主题标签', '创建时间','作者', '阅读数', '点赞数', '评论数', '回复数', '是否精华','是否问答', '是否文件','主题内容']#主题字段
@@ -50,18 +50,20 @@ html_template = """
 </html>
 """
 
-# UM_distinctid="6cb2da72810-0e3b3efa303afb8-4c312272-1fa400-16cb2da728281";
-# _uab_collina="156636875770574735449994";
+UM_distinctid="16cb2da72810-0e3b3efa303afb8-4c312272-1fa400-16cb2da728281";
+_uab_collina="156636875770574735449994";
 # name=quote("星期八");
-# upload_channel="qiniu";
-# user_id="15142221115542";
-# ws_address="wss://ws.zsxq.com/ws?version=v1.10&access_token=0CBBBCD4-1A68-0BD3-AD93-124745DB5887";
-zsxq_access_token="47D5DBC2-1E63-9CA3-3C6E-883FD947F31B";
+name="sunny";
+upload_channel="qiniu";
+user_id="88511414142252";
+ws_address="wss://ws.zsxq.com/ws?version=v1.10";
+zsxq_access_token="5A039C65-D0D5-E66E-A74A-E6C39623B6D2";
 
 headers = {
     'Connection':'close',
     'User-Agent':"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:69.0) Gecko/20100101 Firefox/69.0",
-    'cookie': "zsxq_access_token=%s;"%(zsxq_access_token)
+    'cookie': "zsxq_access_token=%s;"%(zsxq_access_token),
+    # 'cookie': "UM_distinctid=%s; _uab_collina=%s;name=%s;upload_channel=%s;user_id=%s;ws_address=%s;zsxq_access_token=%s;"%(UM_distinctid,_uab_collina,name,upload_channel,user_id,ws_address,zsxq_access_token)
 }
 
 wk_options = {

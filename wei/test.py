@@ -38,5 +38,15 @@ def data2txt(term_no):
         f.write(','.join(list))
     # np.savetxt(os.path.join('./importtxt','11.txt')
 # data2txt('50598854')
-print(os.path.exists(os.path.join('./importtxt','%s.txt'%('50598867'))))
-print(os.path.abspath(os.path.join('./importtxt','%s.txt'%('50598867'))))
+# print(os.path.exists(os.path.join('./importtxt','%s.txt'%('50598867'))))
+# print(os.path.abspath(os.path.join('./importtxt','%s.txt'%('50598867'))))
+
+def calc(a,b):
+    s=str(a/b)
+    s.split('.')[1][0]
+if __name__ == '__main__':
+    deskPath = os.path.join(os.path.expanduser('~'), "Desktop")
+    print(deskPath)
+    calc(1,3)
+
+
