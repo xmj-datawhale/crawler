@@ -122,8 +122,7 @@ def pullData(threadName,threadID,driver_account):
                     response = s.get(data_url % (str(url), str(p), str(t)))
                     jsonobj = json.loads(response.text)
                     _dataList=jsonobj['list']
-                    # print(format_time(),threadName,'page:',p,'len:',len(_dataList))
-                    print(format_time(),'endPageNo:',endPageNo)
+                    # print(format_time(),threadName,'page:',p,'len:',len(_dataList),'endPageNo:',endPageNo)
                     if len(_dataList)==0 or p>endPageNo:
                         countList.append(totalCount)
                         break

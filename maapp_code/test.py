@@ -359,13 +359,13 @@ if __name__ == '__main__':
     #     print(f.readlines)
     # for i in range(1,20,5):
     #     print(i)
-    dic={}
-    dic['a']={'b':9}
-    dic['d']={'b':9}
-    dic['c']={'b':9}
-    dic['a']=None
-    for key in dic.keys():
-        print(dic[key]['b'])
+    # dic={}
+    # dic['a']={'b':9}
+    # dic['d']={'b':9}
+    # dic['c']={'b':9}
+    # dic['a']=None
+    # for key in dic.keys():
+    #     print(dic[key]['b'])
     # print(dic)
     # print(v)
     # changeV1()
@@ -376,8 +376,11 @@ if __name__ == '__main__':
     #
     # print(getNameByType(3,61045))
 
-    # countFile('D:/码码888/注单.txt')
-    # countFile('D:/码码888/任四.txt')
+    countFile('D:/码码888/注单.txt')
+    countFile('D:/码码888/任四.txt')
+    countFile('D:/码码888/任三.txt')
+    countFile('D:/码码888/任二.txt')
+    countFile('D:/码码888/任一.txt')
 
     # code='4X399'
     # type_num = len([i for i in range(len(code)) if str.upper(code[i]) != 'X'])
