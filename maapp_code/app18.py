@@ -39,8 +39,7 @@ deskPath='C:\\Users\\Administrator\\Desktop'#数据文件路径 配置文件 ind
 threadNo=5#线程数 配置文件 index=1
 totalNo=30000#数据总数 配置文件 index=2
 loginTimeOut=30#登录超时 配置文件 index=3
-lastTotalPage=1
-endPageNo=1
+
 
 # 多线程
 '''
@@ -66,7 +65,7 @@ max_data_id=0
 #新数据标志 当所有线程拉数完毕时设置为False
 newDataFlag=False
 countList=[]
-codeDic={}
+
 if os.path.exists(os.path.join('D:/app', 'other_conf.txt')):
     with open(os.path.join('D:/app', 'other_conf.txt'),'r',encoding='utf-8') as f:
         other_confs=str.strip(f.read())
@@ -104,7 +103,6 @@ class pullDataThread(threading.Thread):  # 继承父类threading.Thread
 def pullData(threadName,threadID,driver_account):
     global threadDic
     global totalNo
-    global codeDic
     while True:
         try:
             #
@@ -122,79 +120,73 @@ def pullData(threadName,threadID,driver_account):
                     response = s.get(data_url % (str(url), str(p), str(t)))
                     jsonobj = json.loads(response.text)
                     _dataList=jsonobj['list']
-                    # print(format_time(),threadName,'page:',p,'len:',len(_dataList),'endPageNo:',endPageNo)
-                    if len(_dataList)==0 or p>endPageNo:
+                    # print(format_time(),threadName,'page:',p,'len:',len(_dataList))
+                    if len(_dataList)==0:
                         countList.append(totalCount)
                         break
                     totalCount=+len(_dataList)
                     # print(format_time(),'pullData',_dataList[0:2])
-                    for e1 in _dataList:
+                    for e1 in jsonobj['list']:
                         code = e1[3]
                         money = e1[5]
                         soup = BeautifulSoup(e1[0], "html.parser")
                         data_id = soup.span.attrs["data-id"]
-
+                        type_num = len([i for i in range(len(code)) if str.upper(code[i]) != 'X'])
+                        # print(format_time(),code,'下注类型：',type_num)
+                        # result.append('%s=%s,' % (str(code), str(money)))
+                        # if data_id not in data_ids:
+                        # data_ids.append(data_id)
                         if str(code).find('球') != -1:
                             # print(code[1])
                             # print(code.split('>')[1].split('<')[0])
                             code0 = code.split('>')[1].split('<')[0]
                             dic = {'一': '%sXXX', '二': 'X%XX', '三': 'XX%sX', '四': 'XXX%s', '五': 'XXXX%s'}
                             codeIndex = code[1]
-                            code = dic[codeIndex] % (str(code0))
-                        type_num = len([i for i in range(len(code)) if str.upper(code[i]) != 'X'])
-                        data_list_all.append('%s=%s' % (str(code), str(money)))
-                        if codeDic.get(data_id):
-                            continue
-                        else:
-                            codeDic[data_id] = '%s=%s' % (str(code), str(money))
-                        if type_num == 1 :  # 任一
-                            data_list1.append('%s=%s' % (str(code), str(money)))
+                            codeStr = dic[codeIndex] % (str(code0))
+                            data_list1.append('%s=%s' % (str(codeStr), str(money)))
+                            data_list_all.append('%s=%s' % (str(codeStr), str(money)))
                         elif type_num == 3:  # 任三
                             data_list3.append('%s=%s' % (str(code), str(money)))
+                            data_list_all.append('%s=%s' % (str(code), str(money)))
                         elif type_num == 2:  # 任二
                             data_list2.append('%s=%s' % (str(code), str(money)))
+                            data_list_all.append('%s=%s' % (str(code), str(money)))
                         elif type_num == 4:  # 任四
                             data_list.append('%s=%s' % (str(code), str(money)))
+                            data_list_all.append('%s=%s' % (str(code), str(money)))
                         elif type_num == 5:  # 任五
                             data_list5.append('%s=%s' % (str(code), str(money)))
-                # for key in codeDic.keys():
-                #     codeStr=str(codeDic[key]).split('=')[0]
-                #     moneyStr=str(codeDic[key]).split('=')[1]
-                #     type_num = len([i for i in range(len(codeStr)) if str.upper(codeStr[i]) != 'X'])
-                #     if type_num== 1:#任一
-                #         data_list1.append('%s=%s' % (str(codeStr), str(moneyStr)))
-                #     elif type_num == 3:  # 任三
-                #         data_list3.append('%s=%s' % (str(codeStr), str(moneyStr)))
-                #     elif type_num == 2:  # 任二
-                #         data_list2.append('%s=%s' % (str(codeStr), str(moneyStr)))
-                #     elif type_num == 4:  # 任四
-                #         data_list.append('%s=%s' % (str(codeStr), str(moneyStr)))
-                #     elif type_num == 5:  # 任五
-                #         data_list5.append('%s=%s' % (str(codeStr), str(moneyStr)))
+                            data_list_all.append('%s=%s' % (str(code), str(money)))
 
                 with open(os.path.join(deskPath, '注单.txt'), 'a+', encoding='utf-8') as f:
                     if len(data_list_all) > 0:
+                        # os.chmod(os.path.join(deskPath, '注单.txt'), stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
                         f.write(',' + ','.join(data_list_all))
                         order_num = +len(data_list)
                         print(format_time(), threadName, '注单写入', len(data_list))
                 with open(os.path.join(deskPath, '任五.txt'), 'a+', encoding='utf-8') as f:
                     if len(data_list5) > 0:
+                        # os.chmod(os.path.join(deskPath, '任四.txt'), stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
                         f.write(',' + ','.join(data_list5))
                         print(format_time(), threadName, '任五写入', len(data_list5))
                 with open(os.path.join(deskPath, '任四.txt'), 'a+', encoding='utf-8') as f:
                     if len(data_list) > 0:
+                        # os.chmod(os.path.join(deskPath, '任四.txt'), stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
                         f.write(',' + ','.join(data_list))
                         print(format_time(), threadName, '任四写入', len(data_list))
                 with open(os.path.join(deskPath, '任三.txt'), 'a+', encoding='utf-8') as f:
                     if len(data_list3) > 0:
+                        # os.chmod(os.path.join(deskPath, '任三.txt'), stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
                         f.write(',' + ','.join(data_list3))
                         print(format_time(), threadName, '任三写入', len(data_list3))
                 with open(os.path.join(deskPath, '任二.txt'), 'a+', encoding='utf-8') as f:
                     if len(data_list2) > 0:
+                        # os.chmod(os.path.join(deskPath, '任二.txt'), stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
                         f.write(',' + ','.join(data_list2))
                         print(format_time(), threadName, '任二写入', len(data_list2))
                 with open(os.path.join(deskPath, '任一.txt'), 'a+', encoding='utf-8') as f:
                     if len(data_list1) > 0:
+                        # os.chmod(os.path.join(deskPath, '任一.txt'), stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)
                         f.write(',' + ','.join(data_list1))
                         print(format_time(), threadName, '任一写入', len(data_list1))
                 threadDic[threadName] = {'status': 0}
@@ -484,7 +476,6 @@ def setThreadStatus(threadDic,status):
         for key in threadDic.keys():
             while threadDic[key]['status']==0:
                 threadDic[key]['status'] = 1
-                sleep(0.1)
 class Example(QMainWindow):
 
     def __init__(self):
@@ -530,9 +521,6 @@ class Example(QMainWindow):
         global order_num
         global newDataFlag
         global loginTimeOut
-        global lastTotalPage
-        global endPageNo
-        global codeDic
         # alarmThread(1, "AlarmThread").start()
         # clearThread(1, "clearThread").start()
         endDateStr = getEndTime()
@@ -574,7 +562,6 @@ class Example(QMainWindow):
                 response = s.get(data_url % (str(url),str(p), str(t)))
                 jsonobj = json.loads(response.text)
                 totalPage = jsonobj['totalPage']
-                endPageNo=totalPage-lastTotalPage+1
                 # 新的一期做处理  1、清理数据【ids】 2、告警数据处理
                 cur_max_data_id=0
                 if (len(jsonobj['list']) > 0):
@@ -587,7 +574,6 @@ class Example(QMainWindow):
                         max_data_id=cur_max_data_id
                         # 告警处理
                         if current_cicle not in alarmDic.keys():
-                            codeDic={}
                             # 新数据标识
                             newDataFlag=True
                             # setThreadStatus(threadDic,0)
@@ -609,7 +595,7 @@ class Example(QMainWindow):
                             newDataFlag = True
                             # setThreadStatus(threadDic, 0)
                             order_num=0
-                            # defFiles()
+                            defFiles()
                             max_data_id=cur_max_data_id
                             setThreadStatus(threadDic, 1)
                             sleep(2)

@@ -381,7 +381,11 @@ if __name__ == '__main__':
     countFile('D:/码码888/任三.txt')
     countFile('D:/码码888/任二.txt')
     countFile('D:/码码888/任一.txt')
-
+    # print(1669709579000-1575015179713)
+    # start=1
+    # end = 100
+    # no=8
+    # print(100/8)
     # code='4X399'
     # type_num = len([i for i in range(len(code)) if str.upper(code[i]) != 'X'])
     # print(type_num)
